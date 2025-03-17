@@ -21,9 +21,14 @@ let currentQuestionIndex = 0;
 let bonnesReponses = 0;
 let reponsesUtilisateur = [];
 
+let canAnswer = true; // Permet de bloquer la réponse pendant l'attente
+
 function loadQuestion() {
   const questionElement = document.getElementById("question");
   const optionsContainer = document.getElementById("options");
+
+  // Réactive le fait de pouvoir répondre pour la nouvelle question
+  canAnswer = true;
 
   // Transition de sortie
   questionElement.classList.add("slide-out");
@@ -63,10 +68,19 @@ function loadQuestion() {
 }
 
 function validateAnswer() {
+  // Si la réponse est déjà bloquée, ne rien faire
+  if (!canAnswer) return;
+
   const selectedOption = document.querySelector("input[name='quiz']:checked");
   if (selectedOption) {
+    // Bloquer la possibilité de répondre pendant la transition
+    canAnswer = false;
+    // Désactiver tous les boutons radio pour éviter un changement de sélection
+    document.querySelectorAll("input[name='quiz']").forEach(input => {
+      input.disabled = true;
+    });
+
     const reponse = selectedOption.value;
-    // Récupérer l'élément label parent pour appliquer la couleur
     const label = selectedOption.parentElement;
     if (reponse === questions[currentQuestionIndex].answer) {
       label.classList.add("correct");
@@ -74,7 +88,6 @@ function validateAnswer() {
       label.classList.add("incorrect");
     }
 
-    // Enregistrer la réponse de l'utilisateur
     reponsesUtilisateur.push({
       question: questions[currentQuestionIndex].question,
       reponseUtilisateur: reponse,
@@ -97,58 +110,57 @@ function validateAnswer() {
   }
 }
 
+
 function afficherResultats() {
   const quizContainer = document.querySelector(".quiz-container");
   quizContainer.innerHTML = `
     <h2>Résultats</h2>
     <p>Vous avez obtenu ${bonnesReponses} bonne(s) réponse(s) sur ${questions.length}.</p>
-    <div id="resultsCarousel">
-      <button id="prev" class="arrow">&#9664;</button>
-      <div id="slideContainer"></div>
-      <button id="next" class="arrow">&#9654;</button>
+    <div id="resultDisplay" class="result-display">
+      <!-- Affichage de la question courante -->
+    </div>
+    <div class="navigation">
+      <button id="prevBtn">&larr;</button>
+      <button id="nextBtn">&rarr;</button>
     </div>
   `;
 
-  // Création des slides pour chaque réponse
-  const slideContainer = document.getElementById("slideContainer");
-  reponsesUtilisateur.forEach((reponse, index) => {
-    // Détermine si la réponse est correcte
-    const estCorrecte = reponse.reponseUtilisateur === reponse.bonneReponse;
-    const slide = document.createElement("div");
-    slide.classList.add("result-slide");
-    // On affiche seulement la première slide par défaut
-    if (index === 0) slide.classList.add("active");
-    
-    slide.innerHTML = `
-      <h3>Question ${index + 1}</h3>
-      <p>${reponse.question}</p>
-      <p>Votre réponse : <span class="result" style="color: ${estCorrecte ? 'green' : 'red'};">
-        ${estCorrecte ? 'Vrai' : 'Fausse'}
-      </span></p>
-      <p>${estCorrecte ? "" : "Bonne réponse : " + reponse.bonneReponse}</p>
+  let currentResultIndex = 0;
+
+  function displayCurrentResult() {
+    const resultDiv = document.getElementById("resultDisplay");
+    const currentResult = reponsesUtilisateur[currentResultIndex];
+    const isCorrect = (currentResult.reponseUtilisateur === currentResult.bonneReponse);
+    resultDiv.innerHTML = `
+      <h3>${currentResult.question}</h3>
+      <p>
+        Votre réponse : 
+        <span style="color: ${isCorrect ? "green" : "red"};">
+          ${currentResult.reponseUtilisateur}
+        </span> - ${isCorrect ? "Vrai" : "Faux"}
+      </p>
+      <p>Bonne réponse : ${currentResult.bonneReponse}</p>
+      <p>Question ${currentResultIndex + 1} sur ${reponsesUtilisateur.length}</p>
     `;
-    slideContainer.appendChild(slide);
+  }
+
+  // Affiche le premier résultat
+  displayCurrentResult();
+
+  // Navigation avec les flèches
+  document.getElementById("prevBtn").addEventListener("click", () => {
+    if (currentResultIndex > 0) {
+      currentResultIndex--;
+      displayCurrentResult();
+    }
   });
 
-  let currentSlide = 0;
-  const slides = document.querySelectorAll(".result-slide");
-  
-  // Fonction pour afficher la slide souhaitée
-  function showSlide(index) {
-    if (index < 0 || index >= slides.length) return;
-    slides[currentSlide].classList.remove("active");
-    currentSlide = index;
-    slides[currentSlide].classList.add("active");
-  }
-  
-  // Gestion des boutons de navigation
-  document.getElementById("prev").addEventListener("click", () => {
-    showSlide(currentSlide - 1);
-  });
-  document.getElementById("next").addEventListener("click", () => {
-    showSlide(currentSlide + 1);
+  document.getElementById("nextBtn").addEventListener("click", () => {
+    if (currentResultIndex < reponsesUtilisateur.length - 1) {
+      currentResultIndex++;
+      displayCurrentResult();
+    }
   });
 }
-
 
 document.addEventListener("DOMContentLoaded", loadQuestion);

@@ -25,18 +25,27 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
-
 .option {
-    display: block;
-    margin: 12px 0;
-    font-size: 18px;
-    color: #5c4033;
-    padding: 10px;
-    border: 2px solid #8b5e3c;
-    border-radius: 5px;
-    background-color: #f4e1c1;
-    cursor: pointer;
-    transition: background 0.3s;
+  display: block;
+  padding: 5px;
+  margin: 5px 0;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+/* Mise en forme de la bonne réponse */
+.correct {
+  background-color: #d4edda;
+  color: #155724;
+  border-color: #c3e6cb;
+}
+
+/* Mise en forme de la mauvaise réponse */
+.incorrect {
+  background-color: #f8d7da;
+  color: #721c24;
+  border-color: #f5c6cb;
 }
 
 .option:hover {

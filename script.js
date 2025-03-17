@@ -99,32 +99,56 @@ function validateAnswer() {
 
 function afficherResultats() {
   const quizContainer = document.querySelector(".quiz-container");
-  quizContainer.innerHTML = `<h2>Résultats</h2>
-    <p>Vous avez obtenu ${bonnesReponses} bonne(s) réponse(s) sur ${questions.length}.</p>`;
-
-  const resultsTable = document.createElement("table");
-  resultsTable.border = "1";
-  resultsTable.innerHTML = `
-    <tr>
-      <th>Question</th>
-      <th>Votre Réponse</th>
-      <th>Bonne Réponse</th>
-    </tr>
+  quizContainer.innerHTML = `
+    <h2>Résultats</h2>
+    <p>Vous avez obtenu ${bonnesReponses} bonne(s) réponse(s) sur ${questions.length}.</p>
+    <div id="resultsCarousel">
+      <button id="prev" class="arrow">&#9664;</button>
+      <div id="slideContainer"></div>
+      <button id="next" class="arrow">&#9654;</button>
+    </div>
   `;
 
-  reponsesUtilisateur.forEach(reponse => {
-    const row = document.createElement("tr");
-    // Couleur de la réponse de l'utilisateur : vert si correcte, rouge sinon
-    const couleur = (reponse.reponseUtilisateur === reponse.bonneReponse) ? "green" : "red";
-    row.innerHTML = `
-      <td>${reponse.question}</td>
-      <td style="color: ${couleur};">${reponse.reponseUtilisateur}</td>
-      <td>${reponse.bonneReponse}</td>
+  // Création des slides pour chaque réponse
+  const slideContainer = document.getElementById("slideContainer");
+  reponsesUtilisateur.forEach((reponse, index) => {
+    // Détermine si la réponse est correcte
+    const estCorrecte = reponse.reponseUtilisateur === reponse.bonneReponse;
+    const slide = document.createElement("div");
+    slide.classList.add("result-slide");
+    // On affiche seulement la première slide par défaut
+    if (index === 0) slide.classList.add("active");
+    
+    slide.innerHTML = `
+      <h3>Question ${index + 1}</h3>
+      <p>${reponse.question}</p>
+      <p>Votre réponse : <span class="result" style="color: ${estCorrecte ? 'green' : 'red'};">
+        ${estCorrecte ? 'Vrai' : 'Fausse'}
+      </span></p>
+      <p>${estCorrecte ? "" : "Bonne réponse : " + reponse.bonneReponse}</p>
     `;
-    resultsTable.appendChild(row);
+    slideContainer.appendChild(slide);
   });
 
-  quizContainer.appendChild(resultsTable);
+  let currentSlide = 0;
+  const slides = document.querySelectorAll(".result-slide");
+  
+  // Fonction pour afficher la slide souhaitée
+  function showSlide(index) {
+    if (index < 0 || index >= slides.length) return;
+    slides[currentSlide].classList.remove("active");
+    currentSlide = index;
+    slides[currentSlide].classList.add("active");
+  }
+  
+  // Gestion des boutons de navigation
+  document.getElementById("prev").addEventListener("click", () => {
+    showSlide(currentSlide - 1);
+  });
+  document.getElementById("next").addEventListener("click", () => {
+    showSlide(currentSlide + 1);
+  });
 }
+
 
 document.addEventListener("DOMContentLoaded", loadQuestion);

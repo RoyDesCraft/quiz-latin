@@ -68,46 +68,43 @@ function loadQuestion() {
 }
 
 function validateAnswer() {
-  // Si la réponse est déjà bloquée, ne rien faire
-  if (!canAnswer) return;
-
   const selectedOption = document.querySelector("input[name='quiz']:checked");
-  if (selectedOption) {
-    // Bloquer la possibilité de répondre pendant la transition
-    canAnswer = false;
-    // Désactiver tous les boutons radio pour éviter un changement de sélection
-    document.querySelectorAll("input[name='quiz']").forEach(input => {
-      input.disabled = true;
-    });
+  const options = document.querySelectorAll("input[name='quiz']");
+  let reponse = selectedOption ? selectedOption.value : null;
 
-    const reponse = selectedOption.value;
-    const label = selectedOption.parentElement;
-    if (reponse === questions[currentQuestionIndex].answer) {
+  // Parcourir toutes les options pour trouver la bonne réponse
+  options.forEach(option => {
+    const label = option.parentElement;
+    if (option.value === questions[currentQuestionIndex].answer) {
+      // Ajouter une classe pour la bonne réponse
       label.classList.add("correct");
-    } else {
+    }
+    // Si l'utilisateur a sélectionné une réponse incorrecte
+    if (reponse && option.value === reponse && reponse !== questions[currentQuestionIndex].answer) {
       label.classList.add("incorrect");
     }
+  });
 
-    reponsesUtilisateur.push({
-      question: questions[currentQuestionIndex].question,
-      reponseUtilisateur: reponse,
-      bonneReponse: questions[currentQuestionIndex].answer
-    });
+  // Enregistrer la réponse de l'utilisateur
+  reponsesUtilisateur.push({
+    question: questions[currentQuestionIndex].question,
+    reponseUtilisateur: reponse,
+    bonneReponse: questions[currentQuestionIndex].answer
+  });
 
-    if (reponse === questions[currentQuestionIndex].answer) {
-      bonnesReponses++;
-    }
-
-    // Attendre 1 seconde pour laisser le temps à l'utilisateur de voir la correction
-    setTimeout(() => {
-      currentQuestionIndex++;
-      if (currentQuestionIndex < questions.length) {
-        loadQuestion();
-      } else {
-        afficherResultats();
-      }
-    }, 1000);
+  if (reponse === questions[currentQuestionIndex].answer) {
+    bonnesReponses++;
   }
+
+  // Attendre 1 seconde pour laisser le temps à l'utilisateur de voir la correction
+  setTimeout(() => {
+    currentQuestionIndex++;
+    if (currentQuestionIndex < questions.length) {
+      loadQuestion();
+    } else {
+      afficherResultats();
+    }
+  }, 1000);
 }
 
 

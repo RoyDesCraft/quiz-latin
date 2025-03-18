@@ -13,62 +13,61 @@ body {
     border: 3px solid #8b5e3c;
     border-radius: 12px;
     box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
-    background-color: #fff8e1; /* Ton parchemin léger */
+    background-color: #fff8e1;
     transition: transform 0.3s ease-in-out;
 }
+
 #resultsCarousel {
-  width: 80%;
-  max-width: 600px;
-  margin: 30px auto;
-  position: relative;
-  text-align: center;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 5px;
-  background: #f9f9f9;
+    width: 80%;
+    max-width: 600px;
+    margin: 30px auto;
+    position: relative;
+    text-align: center;
+    border: 2px solid #8b5e3c;
+    padding: 20px;
+    border-radius: 8px;
+    background: #fff8e1;
 }
 
 #slideContainer {
-  overflow: hidden;
-  height: 200px; /* Ajustez en fonction de votre contenu */
-  position: relative;
+    overflow: hidden;
+    height: 200px;
+    position: relative;
 }
 
 .result-slide {
-  display: none;
-  transition: opacity 0.5s ease;
-  opacity: 0;
-  position: absolute;
-  width: 100%;
-  top: 0;
-  left: 0;
+    display: none;
+    transition: opacity 0.5s ease;
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    left: 0;
 }
 
 .result-slide.active {
-  display: block;
-  opacity: 1;
+    display: block;
+    opacity: 1;
 }
 
 .arrow {
-  background: none;
-  border: none;
-  font-size: 2em;
-  cursor: pointer;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #333;
+    background: none;
+    border: none;
+    font-size: 2em;
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #8b5e3c;
 }
 
 #prev {
-  left: 10px;
+    left: 10px;
 }
 
 #next {
-  right: 10px;
+    right: 10px;
 }
-
-
 
 .question {
     font-size: 22px;
@@ -78,31 +77,31 @@ body {
     text-transform: uppercase;
     letter-spacing: 1px;
 }
+
 .option {
-  display: block;
-  padding: 5px;
-  margin: 5px 0;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  cursor: pointer;
-}
-
-/* Mise en forme de la bonne réponse */
-.correct {
-  background-color: #d4edda;
-  color: #155724;
-  border-color: #c3e6cb;
-}
-
-/* Mise en forme de la mauvaise réponse */
-.incorrect {
-  background-color: #f8d7da;
-  color: #721c24;
-  border-color: #f5c6cb;
+    display: block;
+    padding: 10px;
+    margin: 5px 0;
+    border: 2px solid #8b5e3c;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #fff3cd;
 }
 
 .option:hover {
-    background-color: #BD9271;
+    background-color: #e0b07f;
+}
+
+.correct {
+    background-color: #b6d7a8;
+    color: #2f6627;
+    border-color: #6aa84f;
+}
+
+.incorrect {
+    background-color: #ea9999;
+    color: #990000;
+    border-color: #cc0000;
 }
 
 button {
@@ -119,13 +118,8 @@ button {
 }
 
 button:hover {
-    background-color: #BD9271;
+    background-color: #a67550;
 }
-
-        transform: translateY(-50%) translateX(20px);
-    }
-}
-
 
 .spear {
     position: fixed;
@@ -138,11 +132,11 @@ button:hover {
 }
 
 .left {
-    left: 0;
+    left: 10px;
 }
 
 .right {
-    right: 0;
+    right: 10px;
 }
 
 @keyframes moveSpear {
@@ -150,38 +144,38 @@ button:hover {
         transform: translateY(-50%) translateX(0);
     }
     to {
-        transform: translateY(-50%) translateX(20px);
+        transform: translateY(-50%) translateX(15px);
     }
 }
 
 .result-display {
-  text-align: center;
-  margin: 20px auto;
-  width: 80%;
-  max-width: 600px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+    text-align: center;
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    border: 2px solid #8b5e3c;
+    border-radius: 8px;
+    background-color: #fff8e1;
 }
 
 .navigation {
-  text-align: center;
-  margin-top: 20px;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .navigation button {
-  font-size: 24px;
-  padding: 10px 20px;
-  margin: 0 10px;
-  cursor: pointer;
-  border: none;
-  background-color: #007bff;
-  color: #fff;
-  border-radius: 4px;
-  transition: background-color 0.3s;
+    font-size: 24px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    border: none;
+    background-color: #8b5e3c;
+    color: #fff;
+    border-radius: 6px;
+    transition: background-color 0.3s;
 }
 
 .navigation button:hover {
-  background-color: #0056b3;
+    background-color: #a67550;
 }
